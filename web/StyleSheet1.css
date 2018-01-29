@@ -1,0 +1,870 @@
+﻿/*@version1.1@version */
+/*@createarg[
+{'group':'branded','groupName':'Player logo','name':'watermark','type':'text','title':'Logo URL','default':'',desc:'Location of an external jpg, png or gif image to show in a corner of the display.'},
+{'group':'branded','groupName':'Player logo','name':'watermark_link','type':'text','title':'Logo click URL','default':'',desc:'Open URL on  logo click.'},
+{'group':'design','name':'theme_color2','type':'color','title':'Theme color 2','default':'#98a4b3',desc:'Customize Theme color 2 for your gallery'},
+{'group':'Controls','name':'class_btn_stop','type':'bool','title':'Stop button','default':'false',desc:"Show stop button"},
+{'group':'Controls','name':'class_btn_repeat','type':'bool','title':'Repeat button','default':'false',desc:"Show repeat button"},
+{'group':'Controls','name':'class_btn_playlist','type':'bool','title':'Playlist button','default':'false',desc:"Show playlist button"},
+{'group':'Controls','name':'class_btn_mute','type':'bool','title':'Mute button','default':'false',desc:"Show mute button"},
+{'group':'Controls','name':'class_btn_chromecast','type':'bool','title':'Chromecast button','default':'false',desc:"Show Chromecast button"},
+{'group':'design','name':'player_colors','type':'pallet','title':'Pallet',desc:'Select pre-defined color pallet',
+values :{ 	"Blue Gray" : { short_name : "blue_gray", set : {
+		theme_color: "#234994",
+		text_color : "#616161",
+		bg_color : "#f2f2f2",
+		theme_color2: "#c7c7c7",
+	}}, 	"Dark Mono" : { short_name : "dark_mono", set : {
+		theme_color: "#a8a8a8",
+		text_color : "#eaeaea",
+		bg_color : "#2a2a2a",
+		theme_color2: "#1f1f1f",
+	}}, 	"Bright Navy" : { short_name : "bright_navy", set : {
+		theme_color: "#84ade0",
+		text_color : "#ffffff",
+		bg_color : "#3975bf",
+		theme_color2: "#206cc9",
+	}}, 	"White Mono" : { short_name : "white_mono", set : {
+		theme_color: "#2b2b2b",
+		text_color : "#444444",
+		bg_color : "#ffffff",
+		theme_color2: "#e8e8e8",
+	}}, 	"Matte Gray" : { short_name : "matte_gray", set : {
+		theme_color: "#6e7a8a",
+		text_color : "#738299",
+		bg_color : "#e3e6e8",
+		theme_color2: "#c2cdd5",
+	}}, 	"Sweet Lavender" : { short_name : "sweet_lavender", set : {
+		theme_color: "#620096",
+		text_color : "#7a007a",
+		bg_color : "#ffb8e9",
+		theme_color2: "#c66bff",
+	}}, 	"Sunny Beach" : { short_name : "sunny_beach", set : {
+		theme_color: "#f54100",
+		text_color : "#000000",
+		bg_color : "#fff200",
+		theme_color2: "#ffbf00",
+	}}, 	"Green Field" : { short_name : "green_field", set : {
+		theme_color: "#f2ff3d",
+		text_color : "#3c4f0e",
+		bg_color : "#96db00",
+		theme_color2: "#6fd178",
+	}}, 	"Fb Blue" : { short_name : "fb_blue", set : {
+		theme_color: "#e9eaed",
+		text_color : "#ffffff",
+		bg_color : "#44619d",
+		theme_color2: "#23355B",
+	}}, 	"Cincopa Blue" : { short_name : "cincopa_blue", set : {
+		theme_color: "#00aaff",
+		text_color : "#ffffff",
+		bg_color : "#0086cf",
+		theme_color2: "#1b6ba3",
+	}}, 	"Old Terminal" : { short_name : "old_terminal", set : {
+		theme_color: "#7bff00",
+		text_color : "#489400",
+		bg_color : "#000000",
+		theme_color2: "#000000",
+	}},
+}},
+]@createarg */
+div# ~ gallery_div ~ {
+    font-size: 13px;
+    width: 100% !important;
+    text-align: left;
+}
+
+    div# ~ gallery_div ~ b, div# ~ gallery_div ~ i {
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    div# ~ gallery_div ~ * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    div# ~ gallery_div ~ ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    div# ~ gallery_div ~ .jp-type-playlist {
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    div# ~ gallery_div ~ .jp-interface, div# ~ gallery_div ~ .cp-upper-panel {
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+        div# ~ gallery_div ~ .jp-interface .jp-controls-wrap, div# ~ gallery_div ~ .cp-upper-panel .jp-controls-wrap {
+            display: table;
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: 100%;
+            max-width: 100%;
+            z-index: 5;
+            height: 36px;
+        }
+
+    div# ~ gallery_div ~ .jp-controls {
+        display: table-row;
+        height: 100%;
+        width: 100%;
+    }
+
+        div# ~ gallery_div ~ .jp-controls li {
+            display: table-cell;
+            vertical-align: middle;
+            background: transparent;
+            width: 35px;
+            max-width: 40px;
+            min-width: 25px;
+            height: 100%;
+            padding: 0px;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+            div# ~ gallery_div ~ .jp-controls li.cp-show {
+                display: table-cell !important;
+            }
+
+            div# ~ gallery_div ~ .jp-controls li.cp-hide {
+                display: none !important;
+            }
+
+            div# ~ gallery_div ~ .jp-controls li > a {
+                z-index: 10;
+                position: relative;
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+                div# ~ gallery_div ~ .jp-controls li > a > i {
+                    font-size: 16px;
+                }
+
+            div# ~ gallery_div ~ .jp-controls li.jpli-play > a > i, div# ~ gallery_div ~ .jp-controls li.jpli-pause > a > i {
+                font-size: 22px;
+            }
+
+            div# ~ gallery_div ~ .jp-controls li.jpli-stop, div# ~ gallery_div ~ .jp-controls li.jpli-pause {
+                display: none;
+            }
+
+            div# ~ gallery_div ~ .jp-controls li.jpli-progress {
+                width: 70%;
+                max-width: none;
+                padding: 5px;
+            }
+
+                div# ~ gallery_div ~ .jp-controls li.jpli-progress .jpli-progress-wrap {
+                    position: relative;
+                    z-index: 3;
+                    display: table;
+                    width: 100%;
+                    table-layout: fixed;
+                }
+
+                    div# ~ gallery_div ~ .jp-controls li.jpli-progress .jpli-progress-wrap > * {
+                        display: table-cell !important;
+                        vertical-align: middle;
+                        padding: 0 3px;
+                        position: static !important;
+                        float: none !important;
+                    }
+
+                div# ~ gallery_div ~ .jp-controls li.jpli-progress .jpli-currentinfo {
+                    width: 30%;
+                    text-align: left;
+                    font-size: 13px;
+                    line-height: 1;
+                    font-weight: normal;
+                    color: #~arg_text_color~;
+                    text-align: left;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                div# ~ gallery_div ~ .jp-controls li.jpli-progress .jp-info-progress {
+                    clear: both;
+                }
+
+            div# ~ gallery_div ~ .jp-controls li.jpli-unmute {
+                display: none;
+            }
+
+            div# ~ gallery_div ~ .jp-controls li.jpli-volume-bar {
+                padding: 5px 10px;
+                width: 15%;
+                max-width: none;
+            }
+
+        div# ~ gallery_div ~ .jp-controls [class^="jp-"] > i:before, div# ~ gallery_div ~ .jp-controls [class*=" jp-"] > i:before {
+            margin: 0 !important;
+            vertical-align: middle;
+        }
+
+        div# ~ gallery_div ~ .jp-controls .jp-current-time, div# ~ gallery_div ~ .jp-controls .jp-duration {
+            font-size: 12px;
+            z-index: 3;
+            pointer-events: none;
+            line-height: 1;
+            height: 1em;
+            width: 3.5em;
+        }
+
+    div# ~ gallery_div ~ .jp-slider-volume-bar, div# ~ gallery_div ~ .jp-slider-progress {
+        height: 10px;
+        width: 100%;
+        display: block;
+        margin: 0;
+        z-index: 5;
+    }
+
+        div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume, div# ~ gallery_div ~ .jp-slider-progress .slider-volume {
+            height: 100%;
+            min-height: 0 !important;
+            margin: 0 !important;
+        }
+
+            div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .highlight-track, div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .track, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .highlight-track, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .track {
+                height: 100%;
+            }
+
+            div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .dragger, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .dragger {
+                z-index: 5;
+            }
+
+    div# ~ gallery_div ~ .jp-playlist {
+        position: relative;
+        padding: 0 2px;
+        top: 0;
+        height: 100%;
+        box-sizing: border-box;
+        overflow-y: auto;
+        max-height: calc(100% - 40px);
+        max-height: ~arg_playlist_height~px;
+        text-align: left;
+    }
+
+        div# ~ gallery_div ~ .jp-playlist ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        div# ~ gallery_div ~ .jp-playlist li {
+            overflow: hidden;
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+
+            div# ~ gallery_div ~ .jp-playlist li a {
+                line-height: 1.2;
+                display: block;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                position: relative;
+                padding: .3em .5em;
+            }
+
+        div# ~ gallery_div ~ .jp-playlist .audioItem_title, div# ~ gallery_div ~ .jp-playlist .audioItem_desc {
+            font-size: 1em !important;
+            line-height: inherit;
+            max-width: calc(100% - 40px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        div# ~ gallery_div ~ .jp-playlist .audioItem_desc {
+            opacity: .6;
+        }
+
+        div# ~ gallery_div ~ .jp-playlist .audioItem_duration {
+            display: inline-block !important;
+            float: right;
+            font-size: .9em;
+            opacity: .8;
+            font-weight: normal;
+        }
+
+    div# ~ gallery_div ~ .playlistThumb:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    div# ~ gallery_div ~ .playlistThumb img {
+        max-width: 100%;
+        max-height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    div# ~ gallery_div ~ .branding .jp-branding {
+        display: table-cell !important;
+        padding: 5px 2px;
+        text-align: right;
+        width: 60px;
+        line-height: 20px;
+        z-index: 5;
+    }
+
+        div# ~ gallery_div ~ .branding .jp-branding.cp-hide {
+            display: none !important;
+        }
+
+        div# ~ gallery_div ~ .branding .jp-branding.cp-show {
+            display: table-cell !important;
+        }
+
+        div# ~ gallery_div ~ .branding .jp-branding a {
+            display: block;
+            width: 100%;
+            height: 40px;
+            line-height: 20px;
+        }
+
+            div# ~ gallery_div ~ .branding .jp-branding a img {
+                max-width: 100%;
+                max-height: 100%;
+                max-height: 40px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            div# ~ gallery_div ~ .branding .jp-branding a:after {
+                content: '';
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+    div# ~ gallery_div ~ * {
+        outline: none;
+    }
+
+    div# ~ gallery_div ~ .jp-audio {
+        font-family: 'Arial', sans-sefif;
+    }
+
+    div# ~ gallery_div ~ .jp-interface, div# ~ gallery_div ~ .cp-upper-panel {
+        border-radius: 3px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 1px 3px rgba(13, 25, 32, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.2);
+        -webkit-box-shadow: 0 1px 3px rgba(13, 25, 32, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 3px rgba(13, 25, 32, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.2);
+        background: #~arg_bg_color~;
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #~arg_bg_color~), color-stop(100%, #~arg_theme_color2~));
+        background-image: -webkit-linear-gradient(top, #~arg_bg_color~, #~arg_theme_color2~);
+        background-image: -moz-linear-gradient(top, #~arg_bg_color~, #~arg_theme_color2~);
+        background-image: -ms-linear-gradient(top, #~arg_bg_color~, #~arg_theme_color2~);
+        background-image: -o-linear-gradient(top, #~arg_bg_color~, #~arg_theme_color2~);
+        background-image: linear-gradient(to bottom, #~arg_bg_color~ 0%, #~arg_theme_color2~ 100%);
+    }
+
+    div# ~ gallery_div ~ a {
+        text-decoration: none;
+    }
+
+    div# ~ gallery_div ~ .jp-controls {
+        color: #~arg_text_color~;
+    }
+
+        div# ~ gallery_div ~ .jp-controls li a {
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-right: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+            div# ~ gallery_div ~ .jp-controls li a > i {
+                color: #~arg_text_color~;
+                text-shadow: 0px 1px #~arg_bg_color~;
+            }
+
+            div# ~ gallery_div ~ .jp-controls li a:hover {
+                background-color: #~arg_theme_color~;
+                color: #~arg_bg_color~;
+                border-color: #~arg_theme_color~;
+            }
+
+                div# ~ gallery_div ~ .jp-controls li a:hover > i {
+                    color: #~arg_bg_color~;
+                    text-shadow: -1px -1px rgba(0, 0, 0, 0.3);
+                }
+
+            div# ~ gallery_div ~ .jp-controls li a:active {
+                background-color: #~arg_theme_color~;
+                color: #~arg_bg_color~;
+                border-color: #~arg_bg_color~;
+                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            }
+
+                div# ~ gallery_div ~ .jp-controls li a:active > i {
+                    color: #~arg_bg_color~;
+                    text-shadow: none;
+                }
+
+        div# ~ gallery_div ~ .jp-controls li.on a {
+            background-color: #~arg_theme_color~;
+            color: #~arg_bg_color~;
+            border-color: #~arg_bg_color~;
+        }
+
+            div# ~ gallery_div ~ .jp-controls li.on a > i {
+                color: #~arg_bg_color~;
+                text-shadow: none;
+            }
+
+        div# ~ gallery_div ~ .jp-controls li.jpli-progress, div# ~ gallery_div ~ .jp-controls li.jpli-volume-bar {
+            border-left: 1px solid rgba(255, 255, 255, 0.07);
+            border-right: 1px solid rgba(0, 0, 0, 0.07);
+        }
+
+    div# ~ gallery_div ~ .jp-slider-volume-bar, div# ~ gallery_div ~ .jp-slider-progress {
+        height: 10px;
+    }
+
+        div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .highlight-track, div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .track, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .highlight-track, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .track {
+            background-color: #~arg_theme_color2~;
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.2)), color-stop(100%, #~arg_theme_color2~));
+            background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2), #~arg_theme_color2~);
+            background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2), #~arg_theme_color2~);
+            background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2), #~arg_theme_color2~);
+            background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.2), #~arg_theme_color2~);
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, #~arg_theme_color2~ 100%);
+            border-radius: 5px;
+            -moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .dragger, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .dragger {
+            width: 16px;
+            height: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            -moz-box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.5), 0 2px 5px 2px rgba(0, 0, 0, 0.2), 0 0 10px 2px #~arg_theme_color2~, inset 0 0 5px #~arg_theme_color2~;
+            -webkit-box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.5), 0 2px 5px 2px rgba(0, 0, 0, 0.2), 0 0 10px 2px #~arg_theme_color2~, inset 0 0 5px #~arg_theme_color2~;
+            box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.5), 0 2px 5px 2px rgba(0, 0, 0, 0.2), 0 0 10px 2px #~arg_theme_color2~, inset 0 0 5px #~arg_theme_color2~;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background: #c5c5c5;
+            background: -moz-linear-gradient(90deg, #b4b4b4 20%, #e6e6e6 50%, #b4b4b4 80%);
+            background: -webkit-radial-gradient(50% 0%, 12% 50%, white 0%, rgba(255, 255, 255, 0) 100%), -webkit-radial-gradient(50% 100%, 12% 50%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100%), -webkit-radial-gradient(50% 50%, 200% 50%, #e6e6e6 5%, #d9d9d9 30%, #999999 100%);
+        }
+
+            div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .dragger:after, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .dragger:after {
+                content: '';
+                display: block;
+                width: 10px;
+                height: 10px;
+                background: rgba(90, 90, 90, 0.1);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -5px;
+                margin-left: -5px;
+                border-radius: 5px;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.11), 1px 1px 0 white;
+            }
+
+            div# ~ gallery_div ~ .jp-slider-volume-bar .slider-volume .dragger:after, div# ~ gallery_div ~ .jp-slider-progress .slider-volume .dragger:after {
+                display: none;
+            }
+
+    div# ~ gallery_div ~ .jp-controls .jp-current-time, div# ~ gallery_div ~ .jp-controls .jp-duration {
+        color: #~arg_text_color~;
+        opacity: .7;
+        bottom: -12px;
+    }
+
+    div# ~ gallery_div ~ .jp-playlist ul {
+        background-color: #~arg_bg_color~;
+        border-radius: 0 0 4px 4px;
+        border: 1px solid #~arg_theme_color2~;
+        border-top: none;
+    }
+
+        div# ~ gallery_div ~ .jp-playlist ul li a {
+            color: #~arg_text_color~;
+            position: relative;
+        }
+
+            div# ~ gallery_div ~ .jp-playlist ul li a > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            div# ~ gallery_div ~ .jp-playlist ul li a:before {
+                opacity: .4;
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                border-top: 1px solid #~arg_theme_color2~;
+            }
+
+            div# ~ gallery_div ~ .jp-playlist ul li a:hover {
+                background-color: #~arg_theme_color2~;
+            }
+
+        div# ~ gallery_div ~ .jp-playlist ul li:first-child a:before {
+            border: none;
+        }
+
+        div# ~ gallery_div ~ .jp-playlist ul li.jp-playlist-current a {
+            background-color: #~arg_theme_color~;
+            color: #~arg_bg_color~;
+            -moz-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        div# ~ gallery_div ~ .jp-playlist ul li .audioItem_desc {
+            opacity: .5;
+        }
+
+    div# ~ gallery_div ~ ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    div# ~ gallery_div ~ ::-webkit-scrollbar-track {
+        background: #~arg_bg_color~;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        border-radius: 0;
+    }
+
+    div# ~ gallery_div ~ ::-webkit-scrollbar-thumb {
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        border-radius: 0;
+        background: #~arg_theme_color~;
+        -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
+    }
+
+        div# ~ gallery_div ~ ::-webkit-scrollbar-thumb:window-inactive {
+            background: #~arg_theme_color~;
+            opacity: .5;
+        }
+
+@media screen and (max-width: 800px) {
+    div# ~ gallery_div ~ .jp-controls li.jpli-mute, div# ~ gallery_div ~ .jp-controls li.jpli-unmute, div# ~ gallery_div ~ .jp-controls li.jpli-volume-max {
+        display: none !important;
+    }
+
+    div# ~ gallery_div ~ .jp-branding {
+        width: 50px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    div# ~ gallery_div ~ .jp-controls li.jpli-mute, div# ~ gallery_div ~ .jp-controls li.jpli-unmute, div# ~ gallery_div ~ .jp-controls li.jpli-volume-bar, div# ~ gallery_div ~ .jp-controls li.jpli-volume-max {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    div# ~ gallery_div ~ .jp-controls li {
+        width: auto;
+    }
+
+        div# ~ gallery_div ~ .jp-controls li.jpli-progress .jpli-progress-wrap {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+    div# ~ gallery_div ~ .jp-controls .jp-current-time, div# ~ gallery_div ~ .jp-controls .jp-duration {
+        display: none !important;
+    }
+}
+
+div# ~ gallery_div ~ .cp-upper-panel {
+    height: auto;
+    padding: 3px;
+    white-space: nowrap;
+}
+
+    div# ~ gallery_div ~ .cp-upper-panel:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    div# ~ gallery_div ~ .cp-upper-panel > div {
+        position: relative;
+    }
+
+    div# ~ gallery_div ~ .cp-upper-panel a {
+        display: inline-block;
+        vertical-align: middle;
+        border-color: #~arg_theme_color~;
+        background: #~arg_bg_color~;
+        color: #000;
+        color: #~arg_text_color~;
+        text-decoration: none;
+        line-height: 1;
+        margin: 6px 2px;
+        padding: 10px 5px;
+        border-radius: 3px;
+    }
+
+        div# ~ gallery_div ~ .cp-upper-panel a:hover {
+            background-color: #~arg_theme_color~;
+            color: #~arg_bg_color~;
+        }
+
+    div# ~ gallery_div ~ .cp-upper-panel .ze_search_cont {
+        float: left;
+        width: 60%;
+        position: relative;
+    }
+
+        div# ~ gallery_div ~ .cp-upper-panel .ze_search_cont .ze_searchBox {
+            border-radius: 3px;
+            color: #~arg_text_color~;
+            border: 1px solid #~arg_theme_color~;
+            outline: none !important;
+            background: #~arg_bg_color~;
+            opacity: .8em;
+            width: 100%;
+            width: calc(100% - 65px);
+            padding-right: 24px;
+            padding-left: 5px;
+        }
+
+            div# ~ gallery_div ~ .cp-upper-panel .ze_search_cont .ze_searchBox:focus {
+                opacity: 1;
+                border-color: #~arg_text_color~;
+            }
+
+        div# ~ gallery_div ~ .cp-upper-panel .ze_search_cont .ze_search_clear {
+            position: absolute;
+            margin-left: -15px;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            color: #~arg_text_color~;
+        }
+
+    div# ~ gallery_div ~ .cp-upper-panel .cp-download-all-link {
+        float: right;
+        text-align: right;
+    }
+
+div# ~ gallery_div ~ .jp-controls .jpli-repeat, div# ~ gallery_div ~ .jp-controls .jpli-mute, div# ~ gallery_div ~ .jp-controls .jpli-unmute {
+    display: none;
+}
+
+div# ~ gallery_div ~ .btn_mute .jp-controls .jpli-mute, div# ~ gallery_div ~ .btn_mute .jp-controls .jpli-unmute {
+    display: table-cell !important;
+}
+
+    div# ~ gallery_div ~ .btn_mute .jp-controls .jpli-mute.cp-hide, div# ~ gallery_div ~ .btn_mute .jp-controls .jpli-unmute.cp-hide {
+        display: none !important;
+    }
+
+div# ~ gallery_div ~ .btn_repeat .jpli-repeat {
+    display: table-cell !important;
+}
+
+div# ~ gallery_div ~ .btn_playlist .jpli-playlistbtn {
+    display: table-cell !important;
+}
+
+div# ~ gallery_div ~ .btn_stop .jpli-stop {
+    display: table-cell !important;
+}
+
+div# ~ gallery_div ~ .btn_chromecast .chromecastExist .jpli-chromecast {
+    display: table-cell !important;
+}
+
+div# ~ gallery_div ~ .jp-controls li.jpli-volume-max {
+    display: none !important;
+}
+
+div# ~ gallery_div ~ .jp-controls a {
+    font-size: 0;
+    color: transparent;
+    line-height: 0;
+}
+
+div# ~ gallery_div ~ .jp-controls [class^="jp-"] > i {
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    height: 100%;
+}
+
+    div# ~ gallery_div ~ .jp-controls [class^="jp-"] > i:before, div# ~ gallery_div ~ .jp-controls [class*=" jp-"] > i:before {
+        font-family: "jplayer-default" !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        font-variant: normal !important;
+        text-transform: none !important;
+        speak: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: inherit;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 1;
+        font-size: 1em;
+    }
+
+    div# ~ gallery_div ~ .jp-controls [class^="jp-"] > i:after, div# ~ gallery_div ~ .jp-controls [class*=" jp-"] > i:after {
+        display: inline-block;
+        vertical-align: middle;
+        content: '';
+        height: 100%;
+    }
+
+div# ~ gallery_div ~ .jp-pause > i:before {
+    content: "#";
+}
+
+div# ~ gallery_div ~ .jp-play > i:before {
+    content: "@";
+}
+
+div# ~ gallery_div ~ .jp-previous > i:before {
+    content: "<";
+}
+
+div# ~ gallery_div ~ .jp-next > i:before {
+    content: ">";
+}
+
+div# ~ gallery_div ~ .jp-shuffle > i:before {
+    content: "s";
+}
+
+div# ~ gallery_div ~ .jp-stop > i:before {
+    content: "!";
+}
+
+div# ~ gallery_div ~ .jp-playlistbtn > i:before {
+    content: "p";
+}
+
+div# ~ gallery_div ~ .jp-shuffle > i:before {
+    content: "s";
+}
+
+div# ~ gallery_div ~ .jp-repeat > i:before {
+    content: "r";
+}
+
+div# ~ gallery_div ~ .jp-mute > i:before {
+    content: "M";
+}
+
+div# ~ gallery_div ~ .jp-unmute > i:before {
+    content: "m";
+}
+
+div# ~ gallery_div ~ .jp-volume-max > i:before {
+    content: "v";
+}
+
+div# ~ gallery_div ~ .jp-share > i:before {
+    content: "S";
+}
+
+div# ~ gallery_div ~ .jp-chromecast > i:before {
+    content: "C";
+}
+
+div# ~ gallery_div ~ .jp-controls a {
+    font-size: 0;
+    color: transparent;
+    line-height: 0;
+}
+
+div# ~ gallery_div ~ .jp-controls [class^="jp-"] > i {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+    div# ~ gallery_div ~ .jp-controls [class^="jp-"] > i:before, div# ~ gallery_div ~ .jp-controls [class*=" jp-"] > i:before {
+        font-family: "cincojplayer05", 'jplayer-default' !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        font-variant: normal !important;
+        text-transform: none !important;
+        speak: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: inherit;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 1;
+        font-size: 1em;
+    }
+
+    div# ~ gallery_div ~ .jp-controls [class^="jp-"] > i:after, div# ~ gallery_div ~ .jp-controls [class*=" jp-"] > i:after {
+        display: inline-block;
+        vertical-align: middle;
+        content: '';
+        height: 100%;
+    }
+
+div# ~ gallery_div ~ .jp-pause > i:before {
+    content: "a";
+}
+
+div# ~ gallery_div ~ .jp-play > i:before {
+    content: "b";
+}
+
+div# ~ gallery_div ~ .jp-previous > i:before {
+    content: "c";
+}
+
+div# ~ gallery_div ~ .jp-shuffle > i:before {
+    content: "d";
+}
+
+div# ~ gallery_div ~ .jp-next > i:before {
+    content: "e";
+}
+
+@font-face {
+    font-family: 'cincojplayer05';
+    src: url("data:application/x-font-ttf;charset=utf-8;base64,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") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}

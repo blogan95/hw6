@@ -1,0 +1,64 @@
+﻿/**colors #fe433c (hot salmon)|#977187 (lav)|#9690af (rainy blue)|#0a050d (washed black)|#d68780 (dusty pink) -->*/ 
+::-webkit-scrollbar {
+    width:45;
+   
+}
+{
+    color: antiquewhite;
+}
+
+th {
+    color: #d68780;
+}
+
+*{
+    visibility: unset;
+}
+#side {
+    width: 250px;
+    height: 605px;
+    position: fixed;
+    top: 100;
+    left: 0;
+}
+
+#page {
+    max-width: 940px;
+    margin-left: 290px;
+    margin-right: 140px;
+    
+}
+
+body {
+    font-family: Courier New, Courier, monospace;
+    background-color: #0a050d;
+    color: ivory;
+    font-size: 12px;
+}
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 32px;
+    border-style: double;
+    border-width: 2px;
+    border-color: #d68780;
+    color: #9690af;
+}
+
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    color: #977187;
+    font-weight: bold;
+    font-size: 18px
+}
+
+h3 {
+    font-weight: bolder;
+    font-size: 16px;
+    color: #d68780;
+}
+
+
